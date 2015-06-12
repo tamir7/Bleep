@@ -19,4 +19,5 @@ android {
 }
 
 dependencies {
+    compile 'com.parse.bolts:bolts-android:1.2.0'
 }
