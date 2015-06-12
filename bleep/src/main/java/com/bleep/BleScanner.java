@@ -92,4 +92,8 @@ public abstract class BleScanner {
             }
         });
     }
+
+    public static BleScanner getScanner() {
+        return create(Bleep.getSelf().getBluetoothAdapter());
+    }
 }

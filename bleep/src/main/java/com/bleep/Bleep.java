@@ -15,6 +15,8 @@
  */
 package com.bleep;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
 
 public class Bleep {
@@ -28,5 +30,18 @@ public class Bleep {
     public Bleep initialize(Context context) {
         self = new Bleep(context);
         return self;
+    }
+
+    static Bleep getSelf() {
+        if (self == null) {
+            throw new IllegalStateException("Bleep library has not been initialized");
+        }
+        return self;
+    }
+
+    BluetoothAdapter getBluetoothAdapter() {
+        BluetoothManager btm =
+            (BluetoothManager)context.getSystemService(Context.BLUETOOTH_SERVICE);
+        return btm.getAdapter();
     }
 }
