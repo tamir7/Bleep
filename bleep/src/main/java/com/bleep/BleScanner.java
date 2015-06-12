@@ -58,6 +58,16 @@ public abstract class BleScanner {
         return this;
     }
 
+    public void scan(final ScanCallback callback) {
+        scan().continueWith(new Continuation<List<BleScanResult>, Void>() {
+            @Override
+            public Void then(Task<List<BleScanResult>> task) throws Exception {
+                callback.done(task.getResult(), BleException.construct(task.getError()));
+                return null;
+            }
+        });
+    }
+
     public Task<List<BleScanResult>> scan() {
         return Task.callInBackground(new Callable<Void>() {
             @Override
