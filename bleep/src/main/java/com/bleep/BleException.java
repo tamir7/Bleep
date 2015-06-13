@@ -16,17 +16,18 @@
 package com.bleep;
 
 public class BleException extends Exception {
-    public static final int OTHER_CAUSE = 1;
-    private final int code;
+    public static final int OTHER_CAUSE = 324345;
+    public static final int TIMEOUT = 324346;
+    private final int status;
 
-    BleException(int code, String msg) {
+    BleException(int status, String msg) {
         super(msg);
-        this.code = code;
+        this.status = status;
     }
 
-    BleException(int code, String msg, Throwable cause) {
+    BleException(int status, String msg, Throwable cause) {
         super(msg, cause);
-        this.code = code;
+        this.status = status;
     }
 
     static BleException construct(Exception e) {
@@ -41,7 +42,7 @@ public class BleException extends Exception {
         return new BleException(OTHER_CAUSE, e.getMessage(), e);
     }
 
-    public int getCode() {
-        return code;
+    public int getStatus() {
+        return status;
     }
 }

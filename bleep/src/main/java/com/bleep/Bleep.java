@@ -22,6 +22,8 @@ import android.content.Context;
 public class Bleep {
     private static Bleep self;
     private final Context context;
+    private final BleCallbacks callbacks = new BleCallbacks();
+    static boolean LOG = true;
 
     private Bleep(Context context) {
         this.context = context.getApplicationContext();
@@ -30,6 +32,10 @@ public class Bleep {
     public Bleep initialize(Context context) {
         self = new Bleep(context);
         return self;
+    }
+
+    public void enableLogging(boolean enable) {
+        LOG = enable;
     }
 
     static Bleep getSelf() {
@@ -43,5 +49,13 @@ public class Bleep {
         BluetoothManager btm =
             (BluetoothManager)context.getSystemService(Context.BLUETOOTH_SERVICE);
         return btm.getAdapter();
+    }
+
+    BleCallbacks getCallbacks() {
+        return callbacks;
+    }
+
+    Context getContext() {
+        return context;
     }
 }
