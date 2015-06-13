@@ -55,8 +55,8 @@ class ConnectOperation extends BleOperation<BluetoothGatt> {
                 setResponse(gatt);
             } else {
                 setException(new BleException(status,
-                    String.format("Connect to device %s failed with status %s",
-                        device.getAddress(), status)));
+                    String.format("Connect to device %s failed with status %s", device.getAddress(),
+                        status)));
             }
 
             return true;

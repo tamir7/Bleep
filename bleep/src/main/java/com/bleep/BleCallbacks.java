@@ -44,7 +44,8 @@ class BleCallbacks extends BluetoothGattCallback {
         }
 
         if (Bleep.LOG) {
-            Log.w(TAG, String.format("Unhandled BLE Event onConnectionStateChange with status: %s, newState: %s",
+            Log.w(TAG, String.format(
+                "Unhandled BLE Event onConnectionStateChange with status: %s, newState: %s",
                 status, newState));
         }
     }
@@ -75,10 +76,9 @@ class BleCallbacks extends BluetoothGattCallback {
         }
 
         if (Bleep.LOG) {
-            Log
-                .w(TAG, String.format(
-                    "Unhandled BLE Event onCharacteristicWrite with status: %s, characteristic: %s",
-                    status, characteristic.getUuid()));
+            Log.w(TAG, String.format(
+                "Unhandled BLE Event onCharacteristicWrite with status: %s, characteristic: %s",
+                status, characteristic.getUuid()));
         }
     }
 

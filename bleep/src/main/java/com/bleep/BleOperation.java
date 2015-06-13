@@ -29,17 +29,14 @@ abstract class BleOperation<T> implements BleCallbacksHandler {
     private final Semaphore waitLock = new Semaphore(0);
     private final BleCallbacks callbacks;
     private int timeout = DEFAULT_TIMEOUT;
+    private T response;
+    private BleException exception;
+    protected BleOperation(BleCallbacks callbacks) {
+        this.callbacks = callbacks;
+    }
 
     public Semaphore getWaitLock() {
         return waitLock;
-    }
-
-    ;
-    private T response;
-    private BleException exception;
-
-    protected BleOperation(BleCallbacks callbacks) {
-        this.callbacks = callbacks;
     }
 
     public BleOperation setTimeout(int milliseconds) {
@@ -48,7 +45,9 @@ abstract class BleOperation<T> implements BleCallbacksHandler {
     }
 
     abstract void preformOperation();
+
     abstract String getOperationName();
+
     abstract String getDeviceAddress();
 
     public Task<T> execute() {

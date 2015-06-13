@@ -28,7 +28,7 @@ public class LollipopBleScanner extends BleScanner {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
             onScan(result.getDevice(), result.getRssi(), result.getScanRecord() == null ?
-            null : result.getScanRecord().getBytes());
+                null : result.getScanRecord().getBytes());
         }
     };
 

@@ -39,8 +39,8 @@ public class BleDevice {
 
     Task<Void> connect() {
         Bleep bleep = Bleep.getSelf();
-        return new ConnectOperation(device, bleep.getContext(), bleep.getCallbacks()).execute().onSuccess(
-            new Continuation<BluetoothGatt, Void>() {
+        return new ConnectOperation(device, bleep.getContext(), bleep.getCallbacks()).execute()
+            .onSuccess(new Continuation<BluetoothGatt, Void>() {
                 @Override
                 public Void then(Task<BluetoothGatt> task) throws Exception {
                     gatt = task.getResult();

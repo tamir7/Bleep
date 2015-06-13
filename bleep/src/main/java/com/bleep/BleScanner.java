@@ -29,20 +29,13 @@ import bolts.Task;
 
 public abstract class BleScanner {
     private static final int DEFAULT_SCAN_DURATION = 2000;
-    private final BluetoothAdapter adapter;
-    private int scanDuration = DEFAULT_SCAN_DURATION;
     private static final Semaphore lock = new Semaphore(1);
+    private final BluetoothAdapter adapter;
     private final List<BleScanResult> results = new ArrayList<>();
+    private int scanDuration = DEFAULT_SCAN_DURATION;
 
     protected BleScanner(BluetoothAdapter adapter) {
         this.adapter = adapter;
-    }
-
-    protected abstract void startScan(BluetoothAdapter adapter);
-    protected abstract void stopScan(BluetoothAdapter adapter);
-
-    protected void onScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-        results.add(new BleScanResult(device, rssi, scanRecord));
     }
 
     static BleScanner create(BluetoothAdapter adapter) {
@@ -51,6 +44,18 @@ public abstract class BleScanner {
         }
 
         return new LegacyBleScanner(adapter);
+    }
+
+    public static BleScanner getScanner() {
+        return create(Bleep.getSelf().getBluetoothAdapter());
+    }
+
+    protected abstract void startScan(BluetoothAdapter adapter);
+
+    protected abstract void stopScan(BluetoothAdapter adapter);
+
+    protected void onScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+        results.add(new BleScanResult(device, rssi, scanRecord));
     }
 
     public BleScanner setDuration(int milliseconds) {
@@ -91,9 +96,5 @@ public abstract class BleScanner {
                 return localResults;
             }
         });
-    }
-
-    public static BleScanner getScanner() {
-        return create(Bleep.getSelf().getBluetoothAdapter());
     }
 }

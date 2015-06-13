@@ -20,13 +20,20 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 
 public class Bleep {
+    static boolean LOG = true;
     private static Bleep self;
     private final Context context;
     private final BleCallbacks callbacks = new BleCallbacks();
-    static boolean LOG = true;
 
     private Bleep(Context context) {
         this.context = context.getApplicationContext();
+    }
+
+    static Bleep getSelf() {
+        if (self == null) {
+            throw new IllegalStateException("Bleep library has not been initialized");
+        }
+        return self;
     }
 
     public Bleep initialize(Context context) {
@@ -36,13 +43,6 @@ public class Bleep {
 
     public void enableLogging(boolean enable) {
         LOG = enable;
-    }
-
-    static Bleep getSelf() {
-        if (self == null) {
-            throw new IllegalStateException("Bleep library has not been initialized");
-        }
-        return self;
     }
 
     BluetoothAdapter getBluetoothAdapter() {
