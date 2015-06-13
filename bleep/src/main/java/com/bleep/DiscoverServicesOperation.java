@@ -45,7 +45,7 @@ class DiscoverServicesOperation extends BleOperation<List<BluetoothGattService>>
 
     @Override
     public boolean onServicesDiscovered(BluetoothGatt gatt, int status) {
-        if (this.gatt.getDevice().getName().equals(gatt.getDevice().getName())) {
+        if (this.gatt.getDevice().getAddress().equals(gatt.getDevice().getAddress())) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 setResponse(gatt.getServices());
             } else {
