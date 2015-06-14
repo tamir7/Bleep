@@ -16,26 +16,33 @@
 package com.bleep;
 
 import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 
-import java.util.List;
+import java.util.UUID;
 
-class DiscoverServicesOperation extends BleOperation<List<BluetoothGattService>> {
+public class ReadCharacteristicOperation extends BleOperation<BluetoothGattCharacteristic> {
     private final BluetoothGatt gatt;
+    private final UUID serviceUUID;
+    private final UUID characteristicUUID;
 
-    protected DiscoverServicesOperation(BleCallbacks callbacks, int timeout, BluetoothGatt gatt) {
+    protected ReadCharacteristicOperation(BleCallbacks callbacks, int timeout, BluetoothGatt gatt,
+        UUID serviceUUID, UUID characteristicUUID) {
         super(callbacks, timeout);
         this.gatt = gatt;
+        this.serviceUUID = serviceUUID;
+        this.characteristicUUID = characteristicUUID;
     }
 
     @Override
     void preformOperation() {
-        gatt.discoverServices();
+        BluetoothGattService service = gatt.getService(serviceUUID);
+        gatt.readCharacteristic(service.getCharacteristic(characteristicUUID));
     }
 
     @Override
     String getOperationName() {
-        return "Discover Services";
+        return null;
     }
 
     @Override
@@ -44,18 +51,19 @@ class DiscoverServicesOperation extends BleOperation<List<BluetoothGattService>>
     }
 
     @Override
-    public boolean onServicesDiscovered(BluetoothGatt gatt, int status) {
+    public boolean onCharacteristicRead(BluetoothGatt gatt,
+        BluetoothGattCharacteristic characteristic, int status) {
         if (this.gatt.getDevice().getAddress().equals(gatt.getDevice().getAddress())) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                setResponse(gatt.getServices());
+                setResponse(characteristic);
             } else {
                 setException(new BleException(status,
-                    String.format("Discover Services failed with status %s", status)));
+                    String.format("ReadCharacteristic operation failed with status %s", status)));
             }
 
             return true;
         }
 
-        return super.onServicesDiscovered(gatt, status);
+        return super.onCharacteristicRead(gatt, characteristic, status);
     }
 }

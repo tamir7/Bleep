@@ -18,6 +18,7 @@ package com.bleep;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.os.Build;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ import bolts.Continuation;
 import bolts.Task;
 
 public abstract class BleScanner {
+    private static final String TAG = BleScanner.class.getSimpleName();
     private static final int DEFAULT_SCAN_DURATION = 2000;
     private static final Semaphore lock = new Semaphore(1);
     private final BluetoothAdapter adapter;
@@ -55,6 +57,9 @@ public abstract class BleScanner {
     protected abstract void stopScan(BluetoothAdapter adapter);
 
     protected void onScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+        if (Bleep.LOG) {
+            Log.i(TAG, String.format("Found device %s(%s)", device.getName(), device.getAddress()));
+        }
         results.add(new BleScanResult(device, rssi, scanRecord));
     }
 
@@ -74,6 +79,9 @@ public abstract class BleScanner {
     }
 
     public Task<List<BleScanResult>> scan() {
+        if (Bleep.LOG) {
+            Log.i(TAG, "Start scan");
+        }
         return Task.callInBackground(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -93,6 +101,9 @@ public abstract class BleScanner {
                 List<BleScanResult> localResults = new ArrayList<>(results);
                 results.clear();
                 lock.release();
+                if (Bleep.LOG) {
+                    Log.i(TAG, "Stop scan");
+                }
                 return localResults;
             }
         });

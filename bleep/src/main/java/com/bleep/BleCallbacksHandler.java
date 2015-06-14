@@ -17,6 +17,7 @@ package com.bleep;
 
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
 
 interface BleCallbacksHandler {
     boolean onConnectionStateChange(BluetoothGatt gatt, int status, int newState);
@@ -28,4 +29,10 @@ interface BleCallbacksHandler {
 
     boolean onCharacteristicRead(BluetoothGatt gatt,
         BluetoothGattCharacteristic characteristic, int status);
+
+    boolean onDescriptorRead(BluetoothGatt gatt, BluetoothGattDescriptor descriptor,
+        int status);
+
+    boolean onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor,
+        int status);
 }

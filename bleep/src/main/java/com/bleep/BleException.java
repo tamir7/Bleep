@@ -15,6 +15,8 @@
  */
 package com.bleep;
 
+import android.bluetooth.BluetoothGatt;
+
 public class BleException extends Exception {
     public static final int OTHER_CAUSE = 324345;
     public static final int TIMEOUT = 324346;
@@ -44,5 +46,34 @@ public class BleException extends Exception {
 
     public int getStatus() {
         return status;
+    }
+
+    public String getStatusString() {
+        switch (status) {
+            case BluetoothGatt.GATT_READ_NOT_PERMITTED:
+                return "GATT_READ_NOT_PERMITTED";
+            case BluetoothGatt.GATT_WRITE_NOT_PERMITTED:
+                return "GATT_WRITE_NOT_PERMITTED";
+            case BluetoothGatt.GATT_INSUFFICIENT_AUTHENTICATION:
+                return "GATT_INSUFFICIENT_AUTHENTICATION";
+            case BluetoothGatt.GATT_REQUEST_NOT_SUPPORTED:
+                return "GATT_REQUEST_NOT_SUPPORTED";
+            case BluetoothGatt.GATT_INSUFFICIENT_ENCRYPTION:
+                return "GATT_INSUFFICIENT_ENCRYPTION";
+            case BluetoothGatt.GATT_INVALID_OFFSET:
+                return "GATT_INVALID_OFFSET";
+            case BluetoothGatt.GATT_INVALID_ATTRIBUTE_LENGTH:
+                return "GATT_INVALID_ATTRIBUTE_LENGTH";
+            case BluetoothGatt.GATT_CONNECTION_CONGESTED:
+                return "GATT_CONNECTION_CONGESTED";
+            case BluetoothGatt.GATT_FAILURE:
+                return "GATT_FAILURE";
+            case TIMEOUT:
+                return "TIMEOUT";
+            case OTHER_CAUSE:
+                return "OTHER_CAUSE";
+            default:
+                return String.format("UNKNOWN STATUS: %s", status);
+        }
     }
 }

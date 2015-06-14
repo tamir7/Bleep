@@ -25,8 +25,8 @@ class ConnectOperation extends BleOperation<BluetoothGatt> {
     private final Context context;
     private final BleCallbacks callbacks;
 
-    ConnectOperation(BluetoothDevice device, Context context, BleCallbacks callbacks) {
-        super(callbacks);
+    ConnectOperation(BleCallbacks callbacks, int timeout, BluetoothDevice device, Context context) {
+        super(callbacks, timeout);
         this.device = device;
         this.context = context;
         this.callbacks = callbacks;

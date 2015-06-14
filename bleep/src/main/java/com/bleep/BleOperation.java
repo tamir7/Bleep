@@ -17,6 +17,8 @@ package com.bleep;
 
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
+import android.util.Log;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Semaphore;
@@ -25,23 +27,17 @@ import java.util.concurrent.TimeUnit;
 import bolts.Task;
 
 abstract class BleOperation<T> implements BleCallbacksHandler {
-    private static final int DEFAULT_TIMEOUT = 200;
+    private static final String TAG = BleOperation.class.getSimpleName();
     private final Semaphore waitLock = new Semaphore(0);
     private final BleCallbacks callbacks;
-    private int timeout = DEFAULT_TIMEOUT;
+    private final int timeout;
     private T response;
     private BleException exception;
-    protected BleOperation(BleCallbacks callbacks) {
+    private long startTime;
+
+    protected BleOperation(BleCallbacks callbacks, int timeout) {
         this.callbacks = callbacks;
-    }
-
-    public Semaphore getWaitLock() {
-        return waitLock;
-    }
-
-    public BleOperation setTimeout(int milliseconds) {
-        timeout = milliseconds;
-        return this;
+        this.timeout = timeout;
     }
 
     abstract void preformOperation();
@@ -55,6 +51,7 @@ abstract class BleOperation<T> implements BleCallbacksHandler {
             @Override
             public T call() throws Exception {
                 callbacks.register(BleOperation.this);
+                startTime = System.currentTimeMillis();
                 preformOperation();
                 if (!waitLock.tryAcquire(timeout, TimeUnit.MILLISECONDS)) {
                     exception = new BleException(BleException.TIMEOUT,
@@ -74,7 +71,12 @@ abstract class BleOperation<T> implements BleCallbacksHandler {
 
     protected void setResponse(T response) {
         this.response = response;
+        long endTime = System.currentTimeMillis();
         waitLock.release();
+        if (Bleep.LOG) {
+            Log.e(TAG, String.format("Operation %s completed in %s milliseconds",
+                getOperationName(), endTime - startTime));
+        }
     }
 
     protected void setException(BleException e) {
@@ -100,6 +102,18 @@ abstract class BleOperation<T> implements BleCallbacksHandler {
     @Override
     public boolean onCharacteristicRead(BluetoothGatt gatt,
         BluetoothGattCharacteristic characteristic, int status) {
+        return false;
+    }
+
+    @Override
+    public boolean onDescriptorRead(BluetoothGatt gatt, BluetoothGattDescriptor descriptor,
+        int status) {
+        return false;
+    }
+
+    @Override
+    public boolean onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor,
+        int status) {
         return false;
     }
 }

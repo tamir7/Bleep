@@ -18,6 +18,7 @@ package com.bleep;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
 import android.util.Log;
 
 import java.util.List;
@@ -93,6 +94,38 @@ class BleCallbacks extends BluetoothGattCallback {
         if (Bleep.LOG) {
             Log.w(TAG,
                 String.format("Unhandled BLE Event onServicesDiscovered with status: %s", status));
+        }
+    }
+
+    @Override
+    public void onDescriptorRead(BluetoothGatt gatt, BluetoothGattDescriptor descriptor,
+        int status) {
+        for (BleCallbacksHandler handler : handlers) {
+            if (handler.onDescriptorRead(gatt, descriptor, status)) {
+                return;
+            }
+        }
+
+        if (Bleep.LOG) {
+            Log.w(TAG, String.format(
+                "Unhandled BLE Event onDescriptorRead with status: %s, descriptor: %s",
+                status, descriptor.getUuid()));
+        }
+    }
+
+    @Override
+    public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor,
+        int status) {
+        for (BleCallbacksHandler handler : handlers) {
+            if (handler.onDescriptorWrite(gatt, descriptor, status)) {
+                return;
+            }
+        }
+
+        if (Bleep.LOG) {
+            Log.w(TAG, String.format(
+                "Unhandled BLE Event onDescriptorWrite with status: %s, descriptor: %s",
+                status, descriptor.getUuid()));
         }
     }
 }
