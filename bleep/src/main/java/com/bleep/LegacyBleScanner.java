@@ -19,7 +19,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 
 @SuppressWarnings("deprecation")
-public class LegacyBleScanner extends BleScanner implements BluetoothAdapter.LeScanCallback {
+class LegacyBleScanner extends BleScanner implements BluetoothAdapter.LeScanCallback {
 
     protected LegacyBleScanner(BluetoothAdapter adapter) {
         super(adapter);

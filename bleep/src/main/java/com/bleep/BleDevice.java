@@ -41,7 +41,7 @@ public class BleDevice {
         callbacks = Bleep.getSelf().getCallbacks();
     }
 
-    Task<Void> connect(int timeoutInMilliseconds) {
+    public Task<Void> connect(int timeoutInMilliseconds) {
         return new ConnectOperation(callbacks, timeoutInMilliseconds,
             device, context).execute().onSuccess(new Continuation<BluetoothGatt, Void>() {
             @Override
@@ -52,7 +52,7 @@ public class BleDevice {
         });
     }
 
-    boolean refresh() {
+    public boolean refresh() {
         if (gatt != null) {
             throw new IllegalStateException("Device is not connected");
         }
@@ -60,11 +60,11 @@ public class BleDevice {
         return Hack.refreshGatt(gatt);
     }
 
-    Task<Void> connect() {
+    public Task<Void> connect() {
         return connect(DEFAULT_OPERATION_TIMEOUT);
     }
 
-    Task<List<BluetoothGattService>> discoverServices(int timeoutInMilliseconds) {
+    public Task<List<BluetoothGattService>> discoverServices(int timeoutInMilliseconds) {
         if (gatt == null) {
             throw new IllegalStateException("Device is not connected");
         }
@@ -72,16 +72,16 @@ public class BleDevice {
         return new DiscoverServicesOperation(callbacks, timeoutInMilliseconds, gatt).execute();
     }
 
-    Task<List<BluetoothGattService>> discoverServices() {
+    public Task<List<BluetoothGattService>> discoverServices() {
         return discoverServices(DEFAULT_OPERATION_TIMEOUT);
     }
 
-    Task<BluetoothGattCharacteristic> readCharacteristic(UUID serviceUUID,
+    public Task<BluetoothGattCharacteristic> readCharacteristic(UUID serviceUUID,
         UUID characteristicUUID) {
         return readCharacteristic(serviceUUID, characteristicUUID, DEFAULT_OPERATION_TIMEOUT);
     }
 
-    Task<BluetoothGattCharacteristic> readCharacteristic(UUID serviceUUID,
+    public Task<BluetoothGattCharacteristic> readCharacteristic(UUID serviceUUID,
         UUID characteristicUUID, int timeoutInMilliseconds) {
         if (gatt == null) {
             throw new IllegalStateException("Device is not connected");
@@ -91,13 +91,13 @@ public class BleDevice {
             characteristicUUID).execute();
     }
 
-    Task<BluetoothGattCharacteristic> writeCharacteristic(UUID serviceUUID,
+    public Task<BluetoothGattCharacteristic> writeCharacteristic(UUID serviceUUID,
         UUID characteristicUUID, byte[] value) {
         return writeCharacteristic(serviceUUID, characteristicUUID, value,
             DEFAULT_OPERATION_TIMEOUT);
     }
 
-    Task<BluetoothGattCharacteristic> writeCharacteristic(UUID serviceUUID,
+    public Task<BluetoothGattCharacteristic> writeCharacteristic(UUID serviceUUID,
         UUID characteristicUUID, byte[] value, int timeoutInMilliseconds) {
         if (gatt == null) {
             throw new IllegalStateException("Device is not connected");
@@ -107,7 +107,7 @@ public class BleDevice {
             characteristicUUID, value).execute();
     }
 
-    Task<BluetoothGattDescriptor> readDescriptor(UUID serviceUUID,
+    public Task<BluetoothGattDescriptor> readDescriptor(UUID serviceUUID,
         UUID characteristicUUID, UUID descriptorUUID, int timeoutInMilliseconds) {
         if (gatt == null) {
             throw new IllegalStateException("Device is not connected");
@@ -117,13 +117,13 @@ public class BleDevice {
             characteristicUUID, descriptorUUID).execute();
     }
 
-    Task<BluetoothGattDescriptor> readDescriptor(UUID serviceUUID,
+    public Task<BluetoothGattDescriptor> readDescriptor(UUID serviceUUID,
         UUID characteristicUUID, UUID descriptorUUID) {
         return readDescriptor(serviceUUID, characteristicUUID, descriptorUUID,
             DEFAULT_OPERATION_TIMEOUT);
     }
 
-    Task<BluetoothGattDescriptor> writeDescriptor(UUID serviceUUID,
+    public Task<BluetoothGattDescriptor> writeDescriptor(UUID serviceUUID,
         UUID characteristicUUID, UUID descriptorUUID, byte[] value, int timeoutInMilliseconds) {
         if (gatt == null) {
             throw new IllegalStateException("Device is not connected");
@@ -133,7 +133,7 @@ public class BleDevice {
             characteristicUUID, descriptorUUID, value).execute();
     }
 
-    Task<BluetoothGattDescriptor> writeDescriptor(UUID serviceUUID,
+    public Task<BluetoothGattDescriptor> writeDescriptor(UUID serviceUUID,
         UUID characteristicUUID, UUID descriptorUUID, byte[] value) {
         return writeDescriptor(serviceUUID, characteristicUUID, descriptorUUID, value,
             DEFAULT_OPERATION_TIMEOUT);

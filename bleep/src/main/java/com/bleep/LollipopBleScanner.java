@@ -22,7 +22,7 @@ import android.bluetooth.le.ScanResult;
 import android.os.Build;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-public class LollipopBleScanner extends BleScanner {
+class LollipopBleScanner extends BleScanner {
 
     private final ScanCallback callback = new ScanCallback() {
         @Override

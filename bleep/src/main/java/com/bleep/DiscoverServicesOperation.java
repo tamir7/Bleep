@@ -23,23 +23,23 @@ import java.util.List;
 class DiscoverServicesOperation extends BleOperation<List<BluetoothGattService>> {
     private final BluetoothGatt gatt;
 
-    protected DiscoverServicesOperation(BleCallbacks callbacks, int timeout, BluetoothGatt gatt) {
+    DiscoverServicesOperation(BleCallbacks callbacks, int timeout, BluetoothGatt gatt) {
         super(callbacks, timeout);
         this.gatt = gatt;
     }
 
     @Override
-    void preformOperation() {
+    protected void preformOperation() {
         gatt.discoverServices();
     }
 
     @Override
-    String getOperationName() {
+    protected String getOperationName() {
         return "Discover Services";
     }
 
     @Override
-    String getDeviceAddress() {
+    protected String getDeviceAddress() {
         return gatt.getDevice().getAddress();
     }
 

@@ -33,17 +33,17 @@ class ConnectOperation extends BleOperation<BluetoothGatt> {
     }
 
     @Override
-    void preformOperation() {
+    protected void preformOperation() {
         device.connectGatt(context, false, callbacks);
     }
 
     @Override
-    String getOperationName() {
+    protected String getOperationName() {
         return "Connect";
     }
 
     @Override
-    String getDeviceAddress() {
+    protected String getDeviceAddress() {
         return device.getAddress();
     }
 

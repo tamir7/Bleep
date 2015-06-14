@@ -22,13 +22,13 @@ import android.bluetooth.BluetoothGattService;
 
 import java.util.UUID;
 
-public class ReadDescriptorOperation extends BleOperation<BluetoothGattDescriptor> {
+class ReadDescriptorOperation extends BleOperation<BluetoothGattDescriptor> {
     private final BluetoothGatt gatt;
     private final UUID serviceUUID;
     private final UUID characteristicUUID;
     private final UUID descriptorUUID;
 
-    protected ReadDescriptorOperation(BleCallbacks callbacks, int timeout, BluetoothGatt gatt,
+    ReadDescriptorOperation(BleCallbacks callbacks, int timeout, BluetoothGatt gatt,
         UUID serviceUUID, UUID characteristicUUID, UUID descriptorUUID) {
         super(callbacks, timeout);
         this.gatt = gatt;
@@ -38,7 +38,7 @@ public class ReadDescriptorOperation extends BleOperation<BluetoothGattDescripto
     }
 
     @Override
-    void preformOperation() {
+    protected void preformOperation() {
         BluetoothGattService service = gatt.getService(serviceUUID);
         BluetoothGattCharacteristic characteristic = service.getCharacteristic(characteristicUUID);
         BluetoothGattDescriptor descriptor = characteristic.getDescriptor(descriptorUUID);
@@ -46,12 +46,12 @@ public class ReadDescriptorOperation extends BleOperation<BluetoothGattDescripto
     }
 
     @Override
-    String getOperationName() {
+    protected String getOperationName() {
         return "Read Descriptor";
     }
 
     @Override
-    String getDeviceAddress() {
+    protected String getDeviceAddress() {
         return gatt.getDevice().getAddress();
     }
 

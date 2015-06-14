@@ -40,11 +40,11 @@ abstract class BleOperation<T> implements BleCallbacksHandler {
         this.timeout = timeout;
     }
 
-    abstract void preformOperation();
+    protected abstract void preformOperation();
 
-    abstract String getOperationName();
+    protected abstract String getOperationName();
 
-    abstract String getDeviceAddress();
+    protected abstract String getDeviceAddress();
 
     public Task<T> execute() {
         return Task.callInBackground(new Callable<T>() {
