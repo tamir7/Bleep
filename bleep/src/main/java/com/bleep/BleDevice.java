@@ -150,4 +150,10 @@ public class BleDevice {
     public Task<Void> disconnect() {
         return disconnect(DEFAULT_OPERATION_TIMEOUT);
     }
+
+    public void close() {
+        if (gatt != null) {
+            gatt.close();
+        }
+    }
 }
