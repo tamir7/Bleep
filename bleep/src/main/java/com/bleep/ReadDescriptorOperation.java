@@ -56,8 +56,8 @@ class ReadDescriptorOperation extends BleOperation<BluetoothGattDescriptor> {
     }
 
     @Override
-    public boolean onDescriptorRead(BluetoothGatt gatt,
-        BluetoothGattDescriptor descriptor, int status) {
+    public boolean onDescriptorRead(BluetoothGatt gatt, BluetoothGattDescriptor descriptor,
+        int status) {
         if (this.gatt.getDevice().getAddress().equals(gatt.getDevice().getAddress())) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 setResponse(descriptor);

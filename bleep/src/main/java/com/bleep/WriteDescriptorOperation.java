@@ -59,8 +59,8 @@ class WriteDescriptorOperation extends BleOperation<BluetoothGattDescriptor> {
     }
 
     @Override
-    public boolean onDescriptorWrite(BluetoothGatt gatt,
-        BluetoothGattDescriptor descriptor, int status) {
+    public boolean onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor,
+        int status) {
         if (this.gatt.getDevice().getAddress().equals(gatt.getDevice().getAddress())) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 setResponse(descriptor);

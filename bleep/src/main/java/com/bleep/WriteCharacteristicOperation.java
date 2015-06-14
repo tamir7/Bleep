@@ -57,7 +57,7 @@ class WriteCharacteristicOperation extends BleOperation<BluetoothGattCharacteris
     @Override
     public boolean onCharacteristicWrite(BluetoothGatt gatt,
         BluetoothGattCharacteristic characteristic, int status) {
-        if (this.gatt.getDevice().getName().equals(gatt.getDevice().getName())) {
+        if (this.gatt.getDevice().getAddress().equals(gatt.getDevice().getAddress())) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 setResponse(characteristic);
             } else {

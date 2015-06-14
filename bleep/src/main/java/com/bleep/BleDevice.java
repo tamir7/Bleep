@@ -138,4 +138,16 @@ public class BleDevice {
         return writeDescriptor(serviceUUID, characteristicUUID, descriptorUUID, value,
             DEFAULT_OPERATION_TIMEOUT);
     }
+
+    public Task<Void> disconnect(int timeoutInMilliseconds) {
+        if (gatt == null) {
+            return Task.forResult(null);
+        }
+
+        return new DisconnectOperation(callbacks, timeoutInMilliseconds, gatt).execute();
+    }
+
+    public Task<Void> disconnect() {
+        return disconnect(DEFAULT_OPERATION_TIMEOUT);
+    }
 }
