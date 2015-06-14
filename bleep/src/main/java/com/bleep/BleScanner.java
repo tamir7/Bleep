@@ -35,6 +35,7 @@ public abstract class BleScanner {
     private final BluetoothAdapter adapter;
     private final List<BleScanResult> results = new ArrayList<>();
     private int scanDuration = DEFAULT_SCAN_DURATION;
+    private long startScan;
 
     protected BleScanner(BluetoothAdapter adapter) {
         this.adapter = adapter;
@@ -58,7 +59,8 @@ public abstract class BleScanner {
 
     protected void onScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
         if (Bleep.LOG) {
-            Log.i(TAG, String.format("Found device %s(%s)", device.getName(), device.getAddress()));
+            Log.i(TAG, String.format("Found device %s(%s) in %s milliseconds",
+                device.getName(), device.getAddress(), System.currentTimeMillis() - startScan));
         }
         results.add(new BleScanResult(device, rssi, scanRecord));
     }
@@ -86,6 +88,7 @@ public abstract class BleScanner {
             @Override
             public Void call() throws Exception {
                 lock.acquire();
+                startScan = System.currentTimeMillis();
                 startScan(adapter);
                 return null;
             }
