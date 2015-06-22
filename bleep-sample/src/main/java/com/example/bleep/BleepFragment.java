@@ -6,13 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+public class BleepFragment extends Fragment {
 
-/**
- * A placeholder fragment containing a simple view.
- */
-public class BleepActivityFragment extends Fragment {
-
-    public BleepActivityFragment() {
+    public BleepFragment() {
     }
 
     @Override
